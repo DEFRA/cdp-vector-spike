@@ -3,7 +3,7 @@ name = "cdp-vector-spike"
 version = "0.1.0"
 description = "cdp-vector-spike"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
     "asgi-logger==0.1.0",
     "aws-embedded-metrics==3.3.0",

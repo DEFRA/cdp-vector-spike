@@ -1,10 +1,10 @@
 from logging import getLogger
 
 from fastapi import APIRouter, BackgroundTasks
-from ingestion import ensure_index, s3vectors, store_embeddings
 from pydantic import BaseModel
 
 from app.config import config
+from app.vector.ingestion import ensure_index, s3vectors, store_embeddings
 
 router = APIRouter(prefix="/vector")
 logger = getLogger(__name__)
