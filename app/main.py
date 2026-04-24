@@ -1,11 +1,9 @@
 import os
-from contextlib import asynccontextmanager
 from logging import getLogger
 
 import uvicorn
 from fastapi import FastAPI
 
-from app.common.mongo import get_mongo_client
 from app.common.tracing import TraceIdMiddleware
 from app.config import config
 from app.health.router import router as health_router
@@ -31,7 +29,7 @@ def main() -> None:  # pragma: no cover
     else:
         os.environ.pop("HTTP_PROXY", None)
         os.environ.pop("HTTPS_PROXY", None)
-    
+
     logger.info("starting server on %s", config.port)
 
     uvicorn.run(
