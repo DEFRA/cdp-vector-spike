@@ -1,18 +1,19 @@
 from logging import getLogger
 
-from fastapi import APIRouter, Depends, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks
+from ingestion import ensure_index, s3vectors, store_embeddings
 from pydantic import BaseModel
 
 from app.config import config
-from ingestion import ensure_index, store_embeddings, s3vectors
-
 
 router = APIRouter(prefix="/vector")
 logger = getLogger(__name__)
 
+
 class Document(BaseModel):
     filename: str
     text: str
+
 
 def task_ensure_index():
     try:
@@ -38,6 +39,7 @@ async def index(background_tasks: BackgroundTasks):
     background_tasks.add_task(task_ensure_index)
     return {"ok": True}
 
+
 # basic endpoint example
 @router.post("/embed")
 async def embed(background_tasks: BackgroundTasks):
@@ -51,6 +53,9 @@ async def embed(background_tasks: BackgroundTasks):
 async def list_index():
     return s3vectors.list_indexes(vectorBucketName=config.vector_bucket)
 
+
 @router.get("/list-vectors")
 async def list_vectors():
-    return s3vectors.list_vectors(vectorBucketName=config.vector_bucket, indexName=config.vector_index)
+    return s3vectors.list_vectors(
+        vectorBucketName=config.vector_bucket, indexName=config.vector_index
+    )

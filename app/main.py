@@ -8,8 +8,8 @@ from fastapi import FastAPI
 from app.common.mongo import get_mongo_client
 from app.common.tracing import TraceIdMiddleware
 from app.config import config
-from app.vector.router import router as vector_router
 from app.health.router import router as health_router
+from app.vector.router import router as vector_router
 
 logger = getLogger(__name__)
 
