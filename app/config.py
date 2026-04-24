@@ -15,6 +15,8 @@ class AppConfig(BaseSettings):
     http_proxy: HttpUrl | None = None
     enable_metrics: bool = False
     tracing_header: str = "x-cdp-request-id"
+    vector_bucket: str = "506190012364-cdp-vector-spike"
+    vector_index: str = "cdp-doc-embeddings"
 
 
 config = AppConfig()
