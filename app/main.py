@@ -14,19 +14,7 @@ from app.vector.router import router as vector_router
 logger = getLogger(__name__)
 
 
-@asynccontextmanager
-async def lifespan(_: FastAPI):
-    # Startup
-    client = await get_mongo_client()
-    logger.info("MongoDB client connected")
-    yield
-    # Shutdown
-    if client:
-        await client.close()
-        logger.info("MongoDB client closed")
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 # Setup middleware
 app.add_middleware(TraceIdMiddleware)
@@ -43,6 +31,8 @@ def main() -> None:  # pragma: no cover
     else:
         os.environ.pop("HTTP_PROXY", None)
         os.environ.pop("HTTPS_PROXY", None)
+    
+    logger.info("starting server on %s", config.port)
 
     uvicorn.run(
         "app.main:app",
