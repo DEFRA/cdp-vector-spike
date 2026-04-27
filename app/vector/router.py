@@ -42,9 +42,10 @@ async def index(background_tasks: BackgroundTasks):
 
 # basic endpoint example
 @router.post("/embed")
-async def embed(background_tasks: BackgroundTasks):
-    logger.info("index endpoint")
-    background_tasks.add_task(task_ensure_index)
+async def embed(doc: Document):
+    logger.info("started store_embeddings task")
+    store_embeddings(doc.filename, doc.text)
+    logger.info("ended store_embeddings task")
     return {"ok": True}
 
 
