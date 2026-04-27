@@ -17,6 +17,7 @@ class AppConfig(BaseSettings):
     tracing_header: str = "x-cdp-request-id"
     vector_bucket: str = "506190012364-cdp-vector-spike"
     vector_index: str = "cdp-doc-embeddings"
+    model_id: str = "arn:aws:bedrock:eu-west-2:506190012364:application-inference-profile/lrewwbmyta1m"
 
 
 config = AppConfig()

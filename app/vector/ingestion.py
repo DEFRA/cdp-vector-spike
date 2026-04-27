@@ -35,7 +35,7 @@ def ensure_index():
 def store_embeddings(filename: str, text: str):
     logger.info("generating vector for %s", filename)
     response = bedrock.invoke_model(
-        modelId="amazon.titan-embed-text-v2:0", body=json.dumps({"inputText": text})
+        modelId=config.model_id, body=json.dumps({"inputText": text})
     )
 
     # Extract embedding from response.
