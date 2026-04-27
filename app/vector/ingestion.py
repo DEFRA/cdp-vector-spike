@@ -23,7 +23,7 @@ def ensure_index():
         response = s3vectors.create_index(
             vectorBucketName=config.vector_bucket,
             indexName=config.vector_index,
-            dimension=3,
+            dimension=1024,
             distanceMetric="cosine",
             dataType="float32",
             metadataConfiguration={
@@ -35,16 +35,20 @@ def ensure_index():
 def store_embeddings(filename: str, text: str):
     logger.info("generating vector for %s", filename)
     response = bedrock.invoke_model(
-        modelId=config.model_id, body=json.dumps({"inputText": text})
+        modelId=config.model_id,
+        body=json.dumps({"inputText": text, "dimensions": 1024}),
     )
 
     # Extract embedding from response.
-    response_body = json.loads(response["body"].read())
+    resp_body_text = response["body"].read()
+    response_body = json.loads(resp_body_text)
+    logger.info(resp_body_text)
     vector = {
         "key": filename,
         "data": {"float32": response_body["embedding"]},
         "metadata": {"source_text": text, "filename": filename},
     }
+    logger.info(json.dumps(vector))
     logger.info("storing vector for %s", filename)
     s3vectors.put_vectors(
         vectorBucketName=config.vector_bucket,
